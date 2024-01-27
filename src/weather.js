@@ -291,6 +291,7 @@ export default function Weather() {
         }else{
             document.getElementById('container').style.backgroundImage = `url(${background1})`
             document.getElementById('chand').style.display = 'block'
+            document.getElementById('container').style.zIndex = '10'
         }
     }) 
     
@@ -336,12 +337,12 @@ export default function Weather() {
         }
 
     }
-    
     function doSomthing(){
-        getweather(inputCity)
-        // if(inputCity == Data?.name){
-            neww()
-            handlecity()
+
+            getweather(inputCity)
+            // if(inputCity == Data?.name){
+                navigator.geolocation.clearWatch(showPosition)
+                handlecity()
         // }
 
     }
@@ -372,11 +373,14 @@ export default function Weather() {
     
 
     <div className='bigContainer'>
-        <div id='container' className="container">
-            <img id='suraj' className='suraj' src={night} alt="" />
+        <div id='container' className="container" style={{boxShadow:'0px 0px 10px black'}}>
+            <img id='suraj' className='suraj' src={night} alt=""  />
             <img id='chand' className='chand' src={day} alt="" />
-            <CiSearch onClick={doSomthing} style={{position: 'absolute', top:'35px',right: '20px'}} />
-            <input className='input' id='input' key={seed} value={inputCity} onClick={(e) => {neww(e.target.value)}} onChange={(e)=>{setInputCity(e.target.value)}}  placeholder='Enter your city...' type="text" />
+            <CiSearch onClick={doSomthing} onKeyDown={doSomthing} style={{position: 'absolute', top:'35px',right: '20px'}} />
+            <input className='input' id='input' key={seed} onKeyDown={(e) => {
+        if (e.key === "Enter")
+        doSomthing();
+        }} value={inputCity} onClick={(e) => {neww(e.target.value)}} onChange={(e)=>{setInputCity(e.target.value)}}  placeholder='Enter your city...' type="text" />
             <h1 id='temp' className='temp'>{((Data?.main?.temp) - 273.15).toFixed(1)}°C</h1>
             <h1 id='cityname' className='cityname'>{Data?.name} ({Data?.sys?.country}) </h1>
 
